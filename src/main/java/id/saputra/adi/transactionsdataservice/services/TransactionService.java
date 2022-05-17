@@ -60,7 +60,7 @@ public class TransactionService {
             throw new ApplicationException(MESSAGE_REQ_INCOMPLETE, HttpStatus.BAD_REQUEST);
         }
         Pageable pageable = PageRequest.of(transactionDtoRq.getStartPage(),
-                transactionDtoRq.getSizePage(), Sort.by("transactionDate").descending());
+                transactionDtoRq.getSizePage(), Sort.by("id").descending());
         Page<TransactionDao> transactionDaos = transactionRepository.findByUsername(transactionDtoRq.getUsername(), pageable);
         log.info("Get all data Transactions successfully ...");
         return TransformUtil.transform(transactionDaos, new TransactionDtoRs());

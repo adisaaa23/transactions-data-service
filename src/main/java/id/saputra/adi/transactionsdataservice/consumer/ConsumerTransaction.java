@@ -1,6 +1,5 @@
 package id.saputra.adi.transactionsdataservice.consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.saputra.adi.transactionsdataservice.domain.dao.TransactionDao;
 import id.saputra.adi.transactionsdataservice.repository.TransactionRepository;
@@ -18,16 +17,18 @@ public class ConsumerTransaction {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
     @KafkaListener(topics = "${kafka.topic.transaction}", groupId = "${kafka.group.id}", containerFactory = "containerFactory")
-    public void consumeData(ConsumerRecord<String, Object> consumerRecord) throws JsonProcessingException {
+    public void consume(ConsumerRecord<String, Object> consumerRecord) {
         log.info("Start processing record ...");
-        if (Objects.nonNull(consumerRecord)){
+        if (Objects.nonNull(consumerRecord)) {
             log.debug("consumer record {}", consumerRecord.value());
             ObjectMapper objectMapper = new ObjectMapper();
-            TransactionDao transactionDao = objectMapper.readValue((String) consumerRecord.value(), TransactionDao.class);
+            TransactionDao transactionDao = objectMapper.convertValue(consumerRecord.value(), TransactionDao.class);
             transactionRepository.save(transactionDao);
             log.info("Processing record save data successfully ...");
+        } else {
+            log.warn("consumer record is null ...");
         }
-        log.warn("consumer record is null ...");
     }
 }

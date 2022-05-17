@@ -16,7 +16,7 @@ import static org.springframework.data.elasticsearch.annotations.FieldType.Keywo
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(indexName = "idx_transactions")
+@Document(indexName = "transactions")
 public class TransactionDao implements Serializable {
 
     private static final long serialVersionUID = 1421236295854313607L;

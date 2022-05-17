@@ -37,7 +37,7 @@ public class CustomQueryElasticService {
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery("productCode", transactionDtoRq.getProductCode()))
                 .build();
 
-        SearchHits<TransactionDao> articles = elasticsearchTemplate.search(searchQuery, TransactionDao.class, IndexCoordinates.of("idx_transactions"));
+        SearchHits<TransactionDao> articles = elasticsearchTemplate.search(searchQuery, TransactionDao.class, IndexCoordinates.of("transactions"));
         log.info("searchByProductOrAmount Transactions successfully ...");
         return TransformUtil.transform(articles.get(), new TransactionDtoRs());
     }
